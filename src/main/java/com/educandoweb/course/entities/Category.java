@@ -8,26 +8,27 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_category")
-public class Category implements Serializable{
-	
+public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 	private String name;
 	
-	@Transient
-	private Set<Product> products = new HashSet<>(); 
+
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categories")
+	private Set<Product> products = new HashSet<>();
 	
 	public Category() {
-		
 	}
 
 	public Category(Long id, String name) {
@@ -51,11 +52,11 @@ public class Category implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public Set<Product> getProducts() {
 		return products;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -64,7 +65,6 @@ public class Category implements Serializable{
 		return result;
 	}
 
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -81,10 +81,4 @@ public class Category implements Serializable{
 			return false;
 		return true;
 	}
-
-	
-
-	
-	
-
 }
